@@ -39,6 +39,8 @@ public class WallpaperListAdapter extends RecyclerView.Adapter<WallpaperListAdap
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         final Photo photo = mPhotos.get(position);
+
+        holder.imageTitle.setText(photo.getTitle());
         holder.imageAuthor.setText(photo.getOwnername());
         Picasso.with(mContext).load(photo.getPhotoUrl(640)).into(holder.imageView);
     }
@@ -51,12 +53,13 @@ public class WallpaperListAdapter extends RecyclerView.Adapter<WallpaperListAdap
     public class ViewHolder extends RecyclerView.ViewHolder {
         protected final FrameLayout imageTextContainer;
         protected final ImageView imageView;
-        protected final TextView imageAuthor;
+        protected final TextView imageTitle, imageAuthor;
 
         public ViewHolder(View itemView) {
             super(itemView);
             imageTextContainer = (FrameLayout) itemView.findViewById(R.id.item_image_text_container);
             imageView = (ImageView) itemView.findViewById(R.id.item_image_img);
+            imageTitle = (TextView) itemView.findViewById(R.id.item_image_title);
             imageAuthor = (TextView) itemView.findViewById(R.id.item_image_author);
         }
     }

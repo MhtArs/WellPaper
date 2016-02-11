@@ -1,54 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/image_without_palette">
 
-    <LinearLayout
+    <ImageView
+        android:id="@+id/item_image_img"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="@color/image_without_palette">
+        android:adjustViewBounds="true"
+        android:transitionName="imageCover"
+        android:scaleType="fitXY"
+        android:background="@color/image_without_palette"
+        tools:src="@color/colorPrimaryDark"/>
 
-        <ImageView
-            android:id="@+id/item_image_img"
+    <FrameLayout
+        android:id="@+id/item_image_text_container"
+        android:layout_width="match_parent"
+        android:layout_height="72dp"
+        android:layout_gravity="bottom"
+        android:background="@color/transparent">
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:adjustViewBounds="true"
-            android:transitionName="imageCover"
-            android:scaleType="fitXY"
-            android:background="@color/image_without_palette"/>
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:elevation="10dp"
+            android:orientation="vertical">
 
-        <FrameLayout
-            android:id="@+id/item_image_text_container"
-            android:layout_width="match_parent"
-            android:layout_height="72dp"
-            android:background="@color/image_without_palette"
-            >
-
-            <LinearLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/item_image_title"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                android:layout_marginRight="@dimen/activity_horizontal_margin"
-                android:elevation="10dp"
-                android:orientation="vertical"
-                >
+                android:textColor="@color/text_without_palette"
+                android:textStyle="bold"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:textSize="18sp"
+                tools:text="An Awesome Photo from Flickr!" />
+            <TextView
+                android:id="@+id/item_image_author"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:textColor="@color/text_without_palette"
+                android:lines="1"
+                android:ellipsize="end"
+                android:textSize="16sp"
+                tools:text="Hüsamettin Cindoruk"
+                />
 
-                <TextView
-                    android:id="@+id/item_image_author"
-                    android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    android:textColor="@color/text_without_palette"
-                    android:lines="1"
-                    android:ellipsize="end"
-                    android:textSize="16sp"
-                    tools:text="test"
-                    />
-
-            </LinearLayout>
-        </FrameLayout>
-    </LinearLayout>
+        </LinearLayout>
+    </FrameLayout>
 </FrameLayout>
