@@ -14,7 +14,7 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 import tr.mht.wallpaper.R;
-import tr.mht.wallpaper.model.Image;
+import tr.mht.wallpaper.model.Photo;
 
 /**
  * Created by Administrator on 8.2.2016.
@@ -22,12 +22,12 @@ import tr.mht.wallpaper.model.Image;
 public class WallpaperListAdapter extends RecyclerView.Adapter<WallpaperListAdapter.ViewHolder> {
     public static final String TAG = "WallpaperListAdapter";
     private Context mContext;
-    private List<Image> mImages;
+    private List<Photo> mPhotos;
 
-    public WallpaperListAdapter(Context ctx, List<Image> images) {
+    public WallpaperListAdapter(Context ctx, List<Photo> photos) {
         super();
         mContext = ctx;
-        mImages = images;
+        mPhotos = photos;
     }
 
     @Override
@@ -38,14 +38,14 @@ public class WallpaperListAdapter extends RecyclerView.Adapter<WallpaperListAdap
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        final Image image = mImages.get(position);
-        holder.imageAuthor.setText(image.getUser().getName());
-        Picasso.with(mContext).load(image.getLinks().getDownload()).into(holder.imageView);
+        final Photo photo = mPhotos.get(position);
+        holder.imageAuthor.setText(photo.getOwnername());
+        Picasso.with(mContext).load(photo.getPhotoUrl(640)).into(holder.imageView);
     }
 
     @Override
     public int getItemCount() {
-        return mImages.size();
+        return mPhotos.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

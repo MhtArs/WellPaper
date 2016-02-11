@@ -10,13 +10,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import retrofit.Callback;
 import retrofit.Response;
 import retrofit.Retrofit;
 import tr.mht.wallpaper.adapter.WallpaperListAdapter;
-import tr.mht.wallpaper.model.Image;
+import tr.mht.wallpaper.model.Photo;
+import tr.mht.wallpaper.model.PhotosResponse;
 import tr.mht.wallpaper.network.WellPaperApi;
 
 public class MainActivity extends AppCompatActivity {
@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
 
     RecyclerView imageList;
 
-    ArrayList<Image> mWallpapers;
+    ArrayList<Photo> mWallpapers;
     private WallpaperListAdapter imageAdapter;
 
     @Override
@@ -43,11 +43,11 @@ public class MainActivity extends AppCompatActivity {
         imageAdapter = new WallpaperListAdapter(this, mWallpapers);
         imageList.setAdapter(imageAdapter);
 
-        WellPaperApi.getApi().getImages().enqueue(new Callback<List<Image>>() {
+        WellPaperApi.getApi().getInterestingPhotos().enqueue(new Callback<PhotosResponse>() {
             @Override
-            public void onResponse(Response<List<Image>> response, Retrofit retrofit) {
-                mWallpapers.addAll(response.body());
-                Log.d(TAG, response.body().get(0).getId());
+            public void onResponse(Response<PhotosResponse> response, Retrofit retrofit) {
+                mWallpapers.addAll(response.body().getPhotos().getPhoto());
+                Log.d(TAG, mWallpapers.get(0).getId());
                 imageAdapter.notifyDataSetChanged();
             }
 
