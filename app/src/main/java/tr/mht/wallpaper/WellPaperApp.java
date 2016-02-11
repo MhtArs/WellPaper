@@ -21,4 +21,8 @@ public class WellPaperApp extends Application {
                 .enableWebKitInspector(Stetho.defaultInspectorModulesProvider(mContext))
                 .build());
     }
+
+    public static Context getContext() {
+        return mContext;
+    }
 }

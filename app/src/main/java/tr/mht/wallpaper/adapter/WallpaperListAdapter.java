@@ -1,6 +1,7 @@
 package tr.mht.wallpaper.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,7 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 import tr.mht.wallpaper.R;
+import tr.mht.wallpaper.activity.DetailActivity;
 import tr.mht.wallpaper.model.Photo;
 
 /**
@@ -43,6 +45,15 @@ public class WallpaperListAdapter extends RecyclerView.Adapter<WallpaperListAdap
         holder.imageTitle.setText(photo.getTitle());
         holder.imageAuthor.setText(photo.getOwnername());
         Picasso.with(mContext).load(photo.getPhotoUrl(640)).into(holder.imageView);
+
+        holder.imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(v.getContext(), DetailActivity.class);
+                i.putExtra(DetailActivity.EXTRA_PHOTO, photo);
+                v.getContext().startActivity(i);
+            }
+        });
     }
 
     @Override
