@@ -6,12 +6,23 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+
+import com.mikepenz.aboutlibraries.Libs;
+import com.mikepenz.aboutlibraries.LibsBuilder;
+import com.mikepenz.google_material_typeface_library.GoogleMaterial;
+import com.mikepenz.iconics.IconicsDrawable;
+import com.mikepenz.materialdrawer.Drawer;
+import com.mikepenz.materialdrawer.DrawerBuilder;
+import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
 import tr.mht.wallpaper.R;
 import tr.mht.wallpaper.fragment.WallpaperListFragment;
 
 public class MainActivity extends AppCompatActivity implements WallpaperListFragment.OnFragmentInteractionListener {
     public static final String TAG = "Main Activity";
+    private Drawer drawer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,6 +30,36 @@ public class MainActivity extends AppCompatActivity implements WallpaperListFrag
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        drawer = new DrawerBuilder()
+                .withActivity(this)
+                .withToolbar(toolbar)
+                .addDrawerItems(
+                        new PrimaryDrawerItem()
+                                .withName("Interesting")
+                                .withIcon(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_trending_up)),
+                        new PrimaryDrawerItem()
+                                .withName("About")
+                                .withIcon(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_info))
+                )
+                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+                    @Override
+                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                        switch(position) {
+                            case 0:
+                                // TODO
+                                break;
+                            case 1:
+                                new LibsBuilder()
+                                        .withActivityStyle(Libs.ActivityStyle.DARK)
+                                        .withActivityTitle("About")
+                                        .start(view.getContext());
+                                break;
+                        }
+                        return false;
+                    }
+                })
+                .build();
 
         getSupportFragmentManager().beginTransaction().add(R.id.main_frame, WallpaperListFragment.newInstance()).commit();
     }

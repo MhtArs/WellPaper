@@ -77,10 +77,12 @@ public class WallpaperListFragment extends Fragment {
         WellPaperApi.getApi().getInterestingPhotos(1, 50).enqueue(new Callback<PhotosResponse>() {
             @Override
             public void onResponse(Response<PhotosResponse> response, Retrofit retrofit) {
-                if(response.body().getStat() != null && response.body().getStat() == "ok") {
+                if(response.body().getStat() != null && response.body().getStat().equals("ok")) {
                     mPhotos.addAll(response.body().getPhotos().getPhoto());
                     Log.d(TAG, mPhotos.get(0).getId());
                     imageAdapter.notifyDataSetChanged();
+                } else {
+                    Log.w(TAG, response.body().getStat());
                 }
             }
 
