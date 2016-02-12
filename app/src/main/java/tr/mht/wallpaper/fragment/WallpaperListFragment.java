@@ -47,7 +47,6 @@ public class WallpaperListFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param photos photos to show
      * @return A new instance of fragment WallpaperListFragment.
      */
     public static WallpaperListFragment newInstance() {
@@ -75,12 +74,14 @@ public class WallpaperListFragment extends Fragment {
         imageAdapter = new WallpaperListAdapter(WellPaperApp.getContext(), mPhotos);
         imageList.setAdapter(imageAdapter);
 
-        WellPaperApi.getApi().getInterestingPhotos().enqueue(new Callback<PhotosResponse>() {
+        WellPaperApi.getApi().getInterestingPhotos(1, 50).enqueue(new Callback<PhotosResponse>() {
             @Override
             public void onResponse(Response<PhotosResponse> response, Retrofit retrofit) {
-                mPhotos.addAll(response.body().getPhotos().getPhoto());
-                Log.d(TAG, mPhotos.get(0).getId());
-                imageAdapter.notifyDataSetChanged();
+                if(response.body().getStat() != null && response.body().getStat() == "ok") {
+                    mPhotos.addAll(response.body().getPhotos().getPhoto());
+                    Log.d(TAG, mPhotos.get(0).getId());
+                    imageAdapter.notifyDataSetChanged();
+                }
             }
 
             @Override
