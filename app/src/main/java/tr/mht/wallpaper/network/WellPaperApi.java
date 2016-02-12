@@ -29,5 +29,8 @@ public class WellPaperApi {
     public interface FlickrApi {
         @GET("?method=flickr.interestingness.getList&api_key=" + FLICKR_API_KEY + "&extras=description%2Cowner_name%2Ctags%2Co_dims%2Cviews%2Cmedia%2Curl_o&per_page=50&format=json&nojsoncallback=1")
         Call<PhotosResponse> getInterestingPhotos(@Query("page") int page, @Query("per_page") int per_page);
+
+        @GET("?method=flickr.photos.getRecent&api_key=" + FLICKR_API_KEY + "&extras=description%2Cowner_name%2Ctags%2Co_dims%2Cviews%2Cmedia%2Curl_o&per_page=50&format=json&nojsoncallback=1")
+        Call<PhotosResponse> getRecentPhotos(@Query("page") int page, @Query("per_page") int per_page);
     }
 }

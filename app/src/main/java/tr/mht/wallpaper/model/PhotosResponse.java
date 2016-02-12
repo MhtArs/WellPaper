@@ -12,6 +12,12 @@ public class PhotosResponse {
     @SerializedName("stat")
     @Expose
     private String stat;
+    @SerializedName("code")
+    @Expose
+    private Integer code;
+    @SerializedName("message")
+    @Expose
+    private String message;
 
     /**
      * 
@@ -49,4 +55,19 @@ public class PhotosResponse {
         this.stat = stat;
     }
 
+    public Integer getCode() {
+        return code;
+    }
+
+    public void setCode(Integer code) {
+        this.code = code;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
 }
