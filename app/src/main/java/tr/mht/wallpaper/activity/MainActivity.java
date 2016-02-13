@@ -23,6 +23,22 @@ import tr.mht.wallpaper.fragment.WallpaperListFragment;
 public class MainActivity extends AppCompatActivity implements WallpaperListFragment.OnFragmentInteractionListener {
     public static final String TAG = "Main Activity";
     private Drawer drawer;
+    private OnCategoryChangedListener onCategoryChangedListener;
+
+    public void setOnCategoryChangedListener(OnCategoryChangedListener onCategoryChangedListener) {
+        this.onCategoryChangedListener = onCategoryChangedListener;
+    }
+
+    public enum Category {
+        TRENDING(1),
+        RECENT(2);
+
+        public final int id;
+
+        private Category(int id) {
+            this.id = id;
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +53,12 @@ public class MainActivity extends AppCompatActivity implements WallpaperListFrag
                 .addDrawerItems(
                         new PrimaryDrawerItem()
                                 .withName("Interesting")
+                                .withIdentifier(Category.TRENDING.id)
                                 .withIcon(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_trending_up)),
+                        new PrimaryDrawerItem()
+                                .withName("Recent")
+                                .withIdentifier(Category.RECENT.id)
+                                .withIcon(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_system_update)),
                         new PrimaryDrawerItem()
                                 .withName("About")
                                 .withIcon(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_info))
@@ -45,15 +66,24 @@ public class MainActivity extends AppCompatActivity implements WallpaperListFrag
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                        if(drawerItem != null) {
+                            if(position == 2) {// about
+                                new LibsBuilder()
+                                        .withActivityStyle(Libs.ActivityStyle.DARK)
+                                        .withActivityTitle("About")
+                                        .start(view.getContext());
+                            } else {
+                                if(onCategoryChangedListener != null) {
+                                    onCategoryChangedListener.onCategoryChanged(drawerItem.getIdentifier());
+                                }
+                            }
+                        }
                         switch(position) {
                             case 0:
                                 // TODO
                                 break;
                             case 1:
-                                new LibsBuilder()
-                                        .withActivityStyle(Libs.ActivityStyle.DARK)
-                                        .withActivityTitle("About")
-                                        .start(view.getContext());
+
                                 break;
                         }
                         return false;
@@ -89,5 +119,9 @@ public class MainActivity extends AppCompatActivity implements WallpaperListFrag
     @Override
     public void onFragmentInteraction(Uri uri) {
 
+    }
+
+    public interface OnCategoryChangedListener {
+        void onCategoryChanged(int category);
     }
 }

@@ -32,6 +32,11 @@ public class WallpaperListAdapter extends RecyclerView.Adapter<WallpaperListAdap
         mPhotos = photos;
     }
 
+    public void updatePhotos(List<Photo> photos) {
+        this.mPhotos = photos;
+        notifyDataSetChanged();
+    }
+
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_wallpaper, parent, false);

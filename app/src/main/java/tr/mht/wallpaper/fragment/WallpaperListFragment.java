@@ -12,12 +12,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import retrofit.Callback;
 import retrofit.Response;
 import retrofit.Retrofit;
 import tr.mht.wallpaper.R;
 import tr.mht.wallpaper.WellPaperApp;
+import tr.mht.wallpaper.activity.MainActivity;
 import tr.mht.wallpaper.adapter.WallpaperListAdapter;
 import tr.mht.wallpaper.model.Photo;
 import tr.mht.wallpaper.model.PhotosResponse;
@@ -33,11 +35,11 @@ import tr.mht.wallpaper.network.WellPaperApi;
  */
 public class WallpaperListFragment extends Fragment {
     private static final String TAG = WallpaperListFragment.class.getSimpleName();
-    private ArrayList<Photo> mPhotos;
 
     private OnFragmentInteractionListener mListener;
     private RecyclerView imageList;
     private WallpaperListAdapter imageAdapter;
+    private List<Photo> mCurrentPhotos;
 
     public WallpaperListFragment() {
         // Required empty public constructor
@@ -57,31 +59,31 @@ public class WallpaperListFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if(WallpaperListFragment.this.getActivity() instanceof MainActivity) {
+            ((MainActivity) WallpaperListFragment.this.getActivity()).setOnCategoryChangedListener(new MainActivity.OnCategoryChangedListener() {
+                @Override
+                public void onCategoryChanged(int category) {
+                    if(category == MainActivity.Category.TRENDING.id) {
+                        showTrending();
+                    } else if(category == MainActivity.Category.RECENT.id) {
+                        showRecent();
+                    } else {
+                        // TODO: do something
+                    }
+                }
+            });
+        }
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_wallpaper_list, container, false);
-
-        mPhotos = new ArrayList<>();
-
-        imageList = (RecyclerView)view.findViewById(R.id.wallpaper_list);
-        LinearLayoutManager mLayoutManager = new LinearLayoutManager(WellPaperApp.getContext());
-        imageList.setLayoutManager(mLayoutManager);
-
-        imageAdapter = new WallpaperListAdapter(WellPaperApp.getContext(), mPhotos);
-        imageList.setAdapter(imageAdapter);
-
-        WellPaperApi.getApi().getInterestingPhotos(1, 50).enqueue(new Callback<PhotosResponse>() {
+    private void showRecent() {
+        WellPaperApi.getApi().getRecentPhotos(1, 50).enqueue(new Callback<PhotosResponse>() {
             @Override
             public void onResponse(Response<PhotosResponse> response, Retrofit retrofit) {
                 Log.d(TAG, "Response code is: " + response.code());
-                if(response.body().getStat().equals("ok")) {
-                    mPhotos.addAll(response.body().getPhotos().getPhoto());
-                    Log.d(TAG, mPhotos.get(0).getId());
-                    imageAdapter.notifyDataSetChanged();
+                if (response.body().getStat().equals("ok")) {
+                    updateAdapter(response.body().getPhotos().getPhoto());
+                    Log.d(TAG, mCurrentPhotos.get(0).getId());
                 } else {
                     Log.w(TAG, response.body().getMessage());
                 }
@@ -92,6 +94,44 @@ public class WallpaperListFragment extends Fragment {
                 Log.e(TAG, t.getMessage());
             }
         });
+    }
+
+    private void showTrending() {
+        WellPaperApi.getApi().getInterestingPhotos(1, 50).enqueue(new Callback<PhotosResponse>() {
+            @Override
+            public void onResponse(Response<PhotosResponse> response, Retrofit retrofit) {
+                Log.d(TAG, "Response code is: " + response.code());
+                if(response.body().getStat().equals("ok")) {
+                    updateAdapter(response.body().getPhotos().getPhoto());
+                    Log.d(TAG, mCurrentPhotos.get(0).getId());
+                } else {
+                    Log.w(TAG, response.body().getMessage());
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                Log.e(TAG, t.getMessage());
+            }
+        });
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_wallpaper_list, container, false);
+
+        mCurrentPhotos = new ArrayList<>();
+
+        imageList = (RecyclerView)view.findViewById(R.id.wallpaper_list);
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(WellPaperApp.getContext());
+        imageList.setLayoutManager(mLayoutManager);
+
+        imageAdapter = new WallpaperListAdapter(WellPaperApp.getContext(), mCurrentPhotos);
+        imageList.setAdapter(imageAdapter);
+
+        showTrending();
 
         return view;
     }
@@ -118,6 +158,12 @@ public class WallpaperListFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    private void updateAdapter(List<Photo> photos) {
+        mCurrentPhotos = photos;
+        imageAdapter.updatePhotos(photos);
+        imageList.scrollToPosition(0);
     }
 
     /**
