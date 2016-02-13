@@ -16,6 +16,7 @@ import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.Nameable;
 
 import tr.mht.wallpaper.R;
 import tr.mht.wallpaper.fragment.WallpaperListFragment;
@@ -31,7 +32,8 @@ public class MainActivity extends AppCompatActivity implements WallpaperListFrag
 
     public enum Category {
         TRENDING(1),
-        RECENT(2);
+        RECENT(2),
+        NEARME(3);
 
         public final int id;
 
@@ -44,7 +46,7 @@ public class MainActivity extends AppCompatActivity implements WallpaperListFrag
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         drawer = new DrawerBuilder()
@@ -60,19 +62,27 @@ public class MainActivity extends AppCompatActivity implements WallpaperListFrag
                                 .withIdentifier(Category.RECENT.id)
                                 .withIcon(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_system_update)),
                         new PrimaryDrawerItem()
+                                .withName("Near Me")
+                                .withIdentifier(Category.NEARME.id)
+                                .withIcon(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_my_location)),
+                        new PrimaryDrawerItem()
                                 .withName("About")
+                                .withSelectable(false)
                                 .withIcon(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_info))
                 )
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
                         if(drawerItem != null) {
-                            if(position == 2) {// about
+                            if(position == 3) {// about
                                 new LibsBuilder()
                                         .withActivityStyle(Libs.ActivityStyle.DARK)
                                         .withActivityTitle("About")
                                         .start(view.getContext());
                             } else {
+                                if(drawerItem instanceof Nameable) {
+                                    toolbar.setTitle(((Nameable) drawerItem).getName().getText(MainActivity.this));
+                                }
                                 if(onCategoryChangedListener != null) {
                                     onCategoryChangedListener.onCategoryChanged(drawerItem.getIdentifier());
                                 }

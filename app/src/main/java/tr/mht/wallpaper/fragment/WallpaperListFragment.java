@@ -1,6 +1,7 @@
 package tr.mht.wallpaper.fragment;
 
 import android.content.Context;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -41,6 +42,10 @@ public class WallpaperListFragment extends Fragment {
     private WallpaperListAdapter imageAdapter;
     private List<Photo> mCurrentPhotos;
 
+    private Location location;
+
+    private int perpage = 100;
+
     public WallpaperListFragment() {
         // Required empty public constructor
     }
@@ -68,6 +73,8 @@ public class WallpaperListFragment extends Fragment {
                         showTrending();
                     } else if(category == MainActivity.Category.RECENT.id) {
                         showRecent();
+                    } else if(category == MainActivity.Category.NEARME.id) {
+                        showNearMe();
                     } else {
                         // TODO: do something
                     }
@@ -77,7 +84,7 @@ public class WallpaperListFragment extends Fragment {
     }
 
     private void showRecent() {
-        WellPaperApi.getApi().getRecentPhotos(1, 50).enqueue(new Callback<PhotosResponse>() {
+        WellPaperApi.getApi().getRecentPhotos(1, perpage).enqueue(new Callback<PhotosResponse>() {
             @Override
             public void onResponse(Response<PhotosResponse> response, Retrofit retrofit) {
                 Log.d(TAG, "Response code is: " + response.code());
@@ -97,7 +104,31 @@ public class WallpaperListFragment extends Fragment {
     }
 
     private void showTrending() {
-        WellPaperApi.getApi().getInterestingPhotos(1, 50).enqueue(new Callback<PhotosResponse>() {
+        WellPaperApi.getApi().getInterestingPhotos(1, perpage).enqueue(new Callback<PhotosResponse>() {
+            @Override
+            public void onResponse(Response<PhotosResponse> response, Retrofit retrofit) {
+                Log.d(TAG, "Response code is: " + response.code());
+                if(response.body().getStat().equals("ok")) {
+                    updateAdapter(response.body().getPhotos().getPhoto());
+                    Log.d(TAG, mCurrentPhotos.get(0).getId());
+                } else {
+                    Log.w(TAG, response.body().getMessage());
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                Log.e(TAG, t.getMessage());
+            }
+        });
+    }
+
+    private void showNearMe() {
+        // Dolmabahce, for testing purposes.
+        double lon = 41.0388293;
+        double lat = 28.9995681;
+
+        WellPaperApi.getApi().getPhotosNearMe(lon, lat, 1, perpage).enqueue(new Callback<PhotosResponse>() {
             @Override
             public void onResponse(Response<PhotosResponse> response, Retrofit retrofit) {
                 Log.d(TAG, "Response code is: " + response.code());
@@ -164,6 +195,10 @@ public class WallpaperListFragment extends Fragment {
         mCurrentPhotos = photos;
         imageAdapter.updatePhotos(photos);
         imageList.scrollToPosition(0);
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
     }
 
     /**
