@@ -382,11 +382,26 @@ public class Photo implements Parcelable {
     }
 
     public String getPhotoSizeStr(int size) {
-        // TODO: return proper photo size according to parameter.
-        return "z"; // 640px on longest side.
+        if(size < 320) {
+            return "n"; // small
+        } else if(size < 640) {
+            return "z"; // medium
+        } else if(size < 800) {
+            return "c"; // medium, 800px on longest side
+        } else if(size < 1024) {
+            return "b"; // large
+        } else if(size < 1600) {
+            return "h"; // 1600 on longest side.
+        } else {
+            return "k"; // 2048 on longest.
+        }
     }
 
     public String getPhotoUrl(int size) {
         return "https://farm" + farm + ".staticflickr.com/" + server + "/" + id + "_" + secret + "_" + getPhotoSizeStr(size) + ".jpg";
+    }
+
+    public String getFlickrPhotoUrl() {
+        return "https://www.flickr.com/photos/" + owner + "/" + id;
     }
 }

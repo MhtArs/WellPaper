@@ -4,6 +4,8 @@
 
     <string name="title_activity_detail">Set Wallpaper</string>
 
+    <string name="muzei_description">Interesting photos from Flickr</string>
+
     <!-- About Libraries -->
     <string name="aboutLibraries_description_showIcon">true</string>
     <string name="aboutLibraries_description_showVersion">true</string>
