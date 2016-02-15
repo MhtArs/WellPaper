@@ -86,7 +86,7 @@
                 android:elevation="4dp"
                 android:stateListAnimator="@anim/fab_anim"
                 android:transitionName="fab"
-                />
+                android:contentDescription="@string/set_wallpaper" />
 
         </RelativeLayout>
     </ScrollView>

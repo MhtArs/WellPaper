@@ -46,8 +46,10 @@ public class DetailActivity extends AppCompatActivity {
         mWallpaperWidth = WallpaperManager.getInstance(DetailActivity.this).getDesiredMinimumWidth();
         mWallpaperHeight = WallpaperManager.getInstance(DetailActivity.this).getDesiredMinimumHeight();
 
+        imageView = (ImageView) findViewById(R.id.activity_detail_image);
         if (Build.VERSION.SDK_INT >= 21) {
             getWindow().setStatusBarColor(Color.BLACK);
+            imageView.setTransitionName("selectedphoto");
         }
 
         mDrawablePhoto = new IconicsDrawable(this, GoogleMaterial.Icon.gmd_photo).color(Color.WHITE).sizeDp(24);
@@ -63,7 +65,6 @@ public class DetailActivity extends AppCompatActivity {
             }
         });
 
-        imageView = (ImageView) findViewById(R.id.activity_detail_image);
         author = (TextView) findViewById(R.id.activity_detail_author);
         title = (TextView) findViewById(R.id.activity_detail_title);
         findViewById(R.id.container).setOnClickListener(new View.OnClickListener() {
@@ -114,5 +115,11 @@ public class DetailActivity extends AppCompatActivity {
                 return null;
             }
         }.execute(urlString);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        supportFinishAfterTransition();
     }
 }

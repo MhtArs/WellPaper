@@ -15,4 +15,5 @@
         is a simple yet powerful app that lets users to set their wallpapers
         from thousands of awesome <a href="https://flickr.com">Flickr</a> photos.
         ]]></string>
+    <string name="set_wallpaper">Set as wallpaper</string>
 </resources>

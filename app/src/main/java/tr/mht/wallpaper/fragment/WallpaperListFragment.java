@@ -159,7 +159,7 @@ public class WallpaperListFragment extends Fragment {
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(WellPaperApp.getContext());
         imageList.setLayoutManager(mLayoutManager);
 
-        imageAdapter = new WallpaperListAdapter(WellPaperApp.getContext(), mCurrentPhotos);
+        imageAdapter = new WallpaperListAdapter(getActivity(), mCurrentPhotos);
         imageList.setAdapter(imageAdapter);
 
         showTrending();
