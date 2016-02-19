@@ -97,7 +97,6 @@ public class WallpaperListFragment extends Fragment {
                 Log.d(TAG, "Response code is: " + response.code());
                 if (response.body().getStat().equals("ok")) {
                     updateAdapter(response.body().getPhotos().getPhoto());
-                    Log.d(TAG, mCurrentPhotos.get(0).getId());
                 } else {
                     Log.w(TAG, response.body().getMessage());
                 }
@@ -117,7 +116,6 @@ public class WallpaperListFragment extends Fragment {
                 Log.d(TAG, "Response code is: " + response.code());
                 if(response.body().getStat().equals("ok")) {
                     updateAdapter(response.body().getPhotos().getPhoto());
-                    Log.d(TAG, mCurrentPhotos.get(0).getId());
                 } else {
                     Log.w(TAG, response.body().getMessage());
                 }
@@ -141,7 +139,6 @@ public class WallpaperListFragment extends Fragment {
                 Log.d(TAG, "Response code is: " + response.code());
                 if(response.body().getStat().equals("ok")) {
                     updateAdapter(response.body().getPhotos().getPhoto());
-                    Log.d(TAG, mCurrentPhotos.get(0).getId());
                 } else {
                     Log.w(TAG, response.body().getMessage());
                 }

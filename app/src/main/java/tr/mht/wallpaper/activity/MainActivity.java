@@ -1,5 +1,6 @@
 package tr.mht.wallpaper.activity;
 
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -62,10 +63,10 @@ public class MainActivity extends AppCompatActivity implements WallpaperListFrag
                                 .withName("Recent")
                                 .withIdentifier(Category.RECENT.id)
                                 .withIcon(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_system_update)),
-                        new PrimaryDrawerItem()
+                        /*new PrimaryDrawerItem()
                                 .withName("Near Me")
                                 .withIdentifier(Category.NEARME.id)
-                                .withIcon(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_my_location)),
+                                .withIcon(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_my_location)),*/
                         new PrimaryDrawerItem()
                                 .withName("About")
                                 .withSelectable(false)
@@ -75,7 +76,7 @@ public class MainActivity extends AppCompatActivity implements WallpaperListFrag
                     @Override
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
                         if(drawerItem != null) {
-                            if(position == 3) {// about
+                            if(position == 2) {// about
                                 new LibsBuilder()
                                         .withActivityStyle(Libs.ActivityStyle.DARK)
                                         .withActivityTitle("About")
@@ -101,7 +102,9 @@ public class MainActivity extends AppCompatActivity implements WallpaperListFrag
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
-        menu.findItem(R.id.action_shuffle).setIcon(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_shuffle).actionBar());
+        menu.findItem(R.id.action_shuffle).setIcon(
+                new IconicsDrawable(this, GoogleMaterial.Icon.gmd_shuffle).color(Color.WHITE).actionBar()
+        );
         return true;
     }
 
