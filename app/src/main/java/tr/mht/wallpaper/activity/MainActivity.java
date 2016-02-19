@@ -33,7 +33,8 @@ public class MainActivity extends AppCompatActivity implements WallpaperListFrag
     public enum Category {
         TRENDING(1),
         RECENT(2),
-        NEARME(3);
+        NEARME(3),
+        SHUFFLE(256);
 
         public final int id;
 
@@ -88,14 +89,6 @@ public class MainActivity extends AppCompatActivity implements WallpaperListFrag
                                 }
                             }
                         }
-                        switch(position) {
-                            case 0:
-                                // TODO
-                                break;
-                            case 1:
-
-                                break;
-                        }
                         return false;
                     }
                 })
@@ -108,19 +101,16 @@ public class MainActivity extends AppCompatActivity implements WallpaperListFrag
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        menu.findItem(R.id.action_shuffle).setIcon(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_shuffle).actionBar());
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch(item.getItemId()) {
+            case R.id.action_shuffle:
+                onCategoryChangedListener.onCategoryChanged(Category.SHUFFLE.id);
+                return true;
         }
 
         return super.onOptionsItemSelected(item);

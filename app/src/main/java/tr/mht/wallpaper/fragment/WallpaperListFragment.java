@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import retrofit.Callback;
@@ -75,12 +76,18 @@ public class WallpaperListFragment extends Fragment {
                         showRecent();
                     } else if(category == MainActivity.Category.NEARME.id) {
                         showNearMe();
-                    } else {
-                        // TODO: do something
+                    } else if(category == MainActivity.Category.SHUFFLE.id) {
+                        shuffle();
                     }
                 }
             });
         }
+    }
+
+    private void shuffle() {
+        List<Photo> shuffled = mCurrentPhotos;
+        Collections.shuffle(shuffled);
+        updateAdapter(shuffled);
     }
 
     private void showRecent() {

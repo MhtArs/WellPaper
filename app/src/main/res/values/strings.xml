@@ -16,4 +16,5 @@
         from thousands of awesome <a href="https://flickr.com">Flickr</a> photos.
         ]]></string>
     <string name="set_wallpaper">Set as wallpaper</string>
+    <string name="action_shuffle">Shuffle</string>
 </resources>
