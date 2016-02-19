@@ -54,6 +54,7 @@ public class MainActivity extends AppCompatActivity implements WallpaperListFrag
         drawer = new DrawerBuilder()
                 .withActivity(this)
                 .withToolbar(toolbar)
+                .withHeader(R.layout.header)
                 .addDrawerItems(
                         new PrimaryDrawerItem()
                                 .withName("Interesting")
