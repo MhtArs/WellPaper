@@ -12,6 +12,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.CustomEvent;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.squareup.picasso.Picasso;
@@ -61,6 +63,8 @@ public class DetailActivity extends AppCompatActivity {
         mFabButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Answers.getInstance().logCustom(new CustomEvent("Set Wallpaper")
+                    .putCustomAttribute("photo_id", mSelectedPhoto.getId()));
                 setWallpaperFromURLString(mSelectedPhoto.getPhotoUrl(mWallpaperWidth));
             }
         });

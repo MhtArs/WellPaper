@@ -51,4 +51,12 @@ tmp
 *.tgz
 *.lock
 *.lck
+
+# Crashlytics files
 com_crashlytics_export_strings.xml
+manifest.txt
+crashlytics.keystore.properties
+crashlytics-build.properties
+
+# Fabric files
+fabric.properties

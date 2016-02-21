@@ -43,6 +43,9 @@
             </intent-filter>
             <meta-data android:name="color" android:value="#2a4e6c"/>
         </service>
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="f7ef4e1cde796c4f6c93eaa401f3e3feb445742e" />
     </application>
 
 </manifest>
