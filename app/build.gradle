@@ -20,9 +20,23 @@ def versionMinor = 0
 def versionPatch = 3
 def versionBuild = 0 // bump for dogfood builds, public betas, etc.
 
+// Load keystore file
+def keystorePropsFile = rootProject.file("keystore.properties");
+def keystoreProps = new Properties()
+keystoreProps.load(new FileInputStream(keystorePropsFile))
+
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.2"
+
+    signingConfigs {
+        release {
+            storeFile file(keystoreProps['storeFile'])
+            storePassword keystoreProps['storePassword']
+            keyAlias keystoreProps['keyAlias']
+            keyPassword keystoreProps['keyPassword']
+        }
+    }
 
     defaultConfig {
         applicationId "tr.mht.wallpaper"
@@ -35,13 +49,16 @@ android {
         debug {
             applicationIdSuffix ".d"
             versionNameSuffix "-debug"
-            try {
-                signingConfig signingConfigs.debug
-            } catch (ex) {
-            }
             minifyEnabled false
         }
         release {
+            debuggable true
+            try {
+                signingConfig signingConfigs.release
+            } catch (ex) {
+
+            }
+
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
